@@ -1,0 +1,14 @@
+.header__vector {
+  background-image: url("../../../images/header.svg");
+  background-repeat: no-repeat;
+  min-height: 33px;
+}
+
+@media screen and (max-width: 510px) {
+  .header__vector {
+    margin-left: 27px;
+    min-height: 24px;
+    max-width: 126px;
+    background-size: contain;
+  }
+}

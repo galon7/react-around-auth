@@ -1,0 +1,6 @@
+.modal_open {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+}

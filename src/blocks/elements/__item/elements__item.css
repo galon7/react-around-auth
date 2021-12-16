@@ -1,0 +1,9 @@
+.elements__item {
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 282px;
+  max-height: 361px;
+  background-color: white;
+  padding-bottom: 22px;
+  position: relative;
+}

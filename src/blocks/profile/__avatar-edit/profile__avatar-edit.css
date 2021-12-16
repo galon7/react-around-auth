@@ -1,0 +1,6 @@
+.profile__avatar-edit {
+  max-width: 26px;
+  max-height: 26px;
+  position: absolute;
+  transform: translate(-390%, 180%);
+}

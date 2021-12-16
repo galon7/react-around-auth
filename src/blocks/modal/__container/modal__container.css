@@ -1,0 +1,13 @@
+.modal__container {
+  background-color: white;
+  width: 430px;
+  border-radius: 10px;
+  padding-bottom: 29px;
+  position: relative;
+}
+@media screen and (max-width: 510px) {
+  .modal__container {
+    max-width: 282px;
+    padding-bottom: 21px;
+  }
+}
