@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import ProtectedRoute from "./ProtectedRoute";
+import Login from "./Login";
+import Register from "./Register";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
@@ -118,16 +122,27 @@ function App() {
       <div className="page">
         <div className="page__container">
           <Header />
-          <Main
-            onEditProfileClick={handleEditProfileClick}
-            onAddPlaceClick={handleAddPlaceClick}
-            onEditAvatarClick={handleEditAvatarClick}
-            onCardClick={handleCardClick}
-            onClose={closeAllPopups}
-            cards={cards}
-            handleCardLike={handleCardLike}
-            handleCardDelete={handleCardDelete}
-          />
+          <Routes>
+            <Route path="/signin" element={<Login />} />
+            <Route path="/signup" element={<Register />} />
+            <Route
+              path="/*"
+              element={
+                <ProtectedRoute isLoggedIn={false}>
+                  <Main
+                    onEditProfileClick={handleEditProfileClick}
+                    onAddPlaceClick={handleAddPlaceClick}
+                    onEditAvatarClick={handleEditAvatarClick}
+                    onCardClick={handleCardClick}
+                    onClose={closeAllPopups}
+                    cards={cards}
+                    handleCardLike={handleCardLike}
+                    handleCardDelete={handleCardDelete}
+                  />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
           <Footer />
 
           <EditProfilePopup
