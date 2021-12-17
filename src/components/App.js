@@ -21,6 +21,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
+  const [isLoggedIn, setLoggedIn] = useState(true);
 
   useEffect(() => {
     api
@@ -121,14 +122,14 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header />
+          <Header isLoggedIn={isLoggedIn} />
           <Routes>
             <Route path="/signin" element={<Login />} />
             <Route path="/signup" element={<Register />} />
             <Route
               path="/*"
               element={
-                <ProtectedRoute isLoggedIn={false}>
+                <ProtectedRoute isLoggedIn={isLoggedIn}>
                   <Main
                     onEditProfileClick={handleEditProfileClick}
                     onAddPlaceClick={handleAddPlaceClick}

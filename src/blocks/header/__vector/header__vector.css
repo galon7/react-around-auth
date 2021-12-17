@@ -2,6 +2,7 @@
   background-image: url("../../../images/header.svg");
   background-repeat: no-repeat;
   min-height: 33px;
+  min-width: 173px;
 }
 
 @media screen and (max-width: 510px) {

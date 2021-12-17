@@ -4,6 +4,8 @@
 @import url(./blocks/page/__container/page__container.css);
 @import url(./blocks/header/header.css);
 @import url(./blocks/header/__vector/header__vector.css);
+@import url(./blocks/header/__link/header__link.css);
+@import url(./blocks/header/__email/header__email.css);
 @import url(./blocks/profile/profile.css);
 @import url(./blocks/profile/__info/profile__info.css);
 @import url(./blocks/profile/__avatar/profile__avatar.css);
@@ -41,3 +43,9 @@
 @import url(./blocks/modal/__container-img/modal__container-img.css);
 @import url(./blocks/modal/__caption/modal__caption.css);
 @import url(./blocks/modal/__error-text/modal__error-text.css);
+@import url(./blocks/modal/__infotooltip/modal__infotooltip.css);
+@import url(./blocks/form/form.css);
+@import url(./blocks/form/__input/form__input.css);
+@import url(./blocks/form/__button/form__button.css);
+@import url(./blocks/form/__header/form__header.css);
+@import url(./blocks/form/__text/form__text.css);
