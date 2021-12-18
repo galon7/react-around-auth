@@ -12,7 +12,7 @@ import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import { register, login } from "../utils/auth";
+import { register, login, checkToken } from "../utils/auth";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -22,7 +22,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
-  const [isLoggedIn, setLoggedIn] = useState(true);
+  const [isLoggedIn, setLoggedIn] = useState("");
 
   useEffect(() => {
     api
@@ -139,21 +139,21 @@ function App() {
   }
 
   function handleSignIn(password, email) {
-    console.log("aaaaaaaa");
     login(password, email)
-      .then((res) => {
-        if (res.status === 200) {
-          console.log("Logged in***");
-        }
-        if (res.status === 400) {
-          console.log("400 - one or more of the fields were not provided");
-        }
-        if (res.status === 401) {
-          console.log("Incorrect email address or password");
-        }
+      .then((res) => res.json())
+      .then((data) => {
+        localStorage.setItem("token", data.token);
       })
       .catch((err) => {
         console.log(err);
+      });
+  }
+
+  function checkUserLogin() {
+    checkToken()
+      .then((res) => res.json())
+      .then((data) => {
+        setLoggedIn(data.data.email);
       });
   }
 
@@ -161,7 +161,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header isLoggedIn={isLoggedIn} />
+          <Header isLoggedIn={isLoggedIn} checkUserLogin={checkUserLogin} />
           <Routes>
             <Route path="/signin" element={<Login handleSignIn={handleSignIn} />} />
             <Route path="/signup" element={<Register handleRegister={handleRegister} />} />

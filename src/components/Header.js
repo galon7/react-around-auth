@@ -1,12 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Header({ isLoggedIn }) {
+function Header({ isLoggedIn, checkUserLogin }) {
+  checkUserLogin();
+
   return (
     <header className="header">
       <div className="header__vector" />
       <div style={{ display: "flex" }}>
-        {isLoggedIn ? <p className="header__email">email@something.com</p> : ""}
+        {isLoggedIn ? <p className="header__email">{isLoggedIn}</p> : ""}
         <Link to="/signin" className="header__link">
           {isLoggedIn ? "Log out" : "Log in"}
         </Link>
