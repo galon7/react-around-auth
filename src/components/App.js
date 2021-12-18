@@ -12,6 +12,7 @@ import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import { register, login } from "../utils/auth";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -118,14 +119,52 @@ function App() {
       .catch((err) => console.log(`Error.....: ${err}`));
   }
 
+  function handleRegister(password, email, openPopup, setTooltip) {
+    register(password, email)
+      .then((res) => {
+        if (res.status === 201) {
+          setTooltip(true);
+          openPopup();
+        }
+        if (res.status === 400) {
+          setTooltip(false);
+          openPopup();
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setTooltip(false);
+        openPopup();
+      });
+  }
+
+  function handleSignIn(password, email) {
+    console.log("aaaaaaaa");
+    login(password, email)
+      .then((res) => {
+        if (res.status === 200) {
+          console.log("Logged in***");
+        }
+        if (res.status === 400) {
+          console.log("400 - one or more of the fields were not provided");
+        }
+        if (res.status === 401) {
+          console.log("Incorrect email address or password");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
           <Header isLoggedIn={isLoggedIn} />
           <Routes>
-            <Route path="/signin" element={<Login />} />
-            <Route path="/signup" element={<Register />} />
+            <Route path="/signin" element={<Login handleSignIn={handleSignIn} />} />
+            <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
             <Route
               path="/*"
               element={

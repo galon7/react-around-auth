@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function Form({ onSubmit, text, message, link }) {
+function Form({ handleRegister, handleSignIn, text, message, link, openPopup, setTooltip }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -12,9 +12,15 @@ function Form({ onSubmit, text, message, link }) {
     setPassword(e.target.value);
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (handleRegister) handleRegister(password, email, openPopup, setTooltip);
+    if (handleSignIn) handleSignIn(password, email);
+  }
+
   return (
     <div>
-      <form action="#" onSubmit={onSubmit} className="form">
+      <form action="#" onSubmit={handleSubmit} className="form">
         <h1 className="form__header">{text}</h1>
         <input
           type="text"

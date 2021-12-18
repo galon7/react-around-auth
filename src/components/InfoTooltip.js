@@ -3,7 +3,6 @@ import success from "../images/success.svg";
 import oops from "../images/oops.svg";
 
 function InfoTooltip({ isOpen, onClose, successMessage }) {
-  console.log(success);
   return (
     <div className={`modal ${isOpen && "modal_open"}`}>
       <div className="modal__container modal__infotooltip">
