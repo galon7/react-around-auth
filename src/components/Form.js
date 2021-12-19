@@ -15,7 +15,9 @@ function Form({ handleRegister, handleSignIn, text, message, link, openPopup, se
   function handleSubmit(e) {
     e.preventDefault();
     if (handleRegister) handleRegister(password, email, openPopup, setTooltip);
-    if (handleSignIn) handleSignIn(password, email);
+    if (handleSignIn) {
+      handleSignIn(password, email);
+    }
   }
 
   return (

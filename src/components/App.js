@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { api } from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import ProtectedRoute from "./ProtectedRoute";
@@ -23,6 +23,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isLoggedIn, setLoggedIn] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     api
@@ -125,6 +126,7 @@ function App() {
         if (res.status === 201) {
           setTooltip(true);
           openPopup();
+          // setTimeout(navigate("/signin"), 3000);
         }
         if (res.status === 400) {
           setTooltip(false);
@@ -143,6 +145,8 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         localStorage.setItem("token", data.token);
+        setLoggedIn(email);
+        navigate("/");
       })
       .catch((err) => {
         console.log(err);
@@ -153,7 +157,7 @@ function App() {
     checkToken()
       .then((res) => res.json())
       .then((data) => {
-        setLoggedIn(data.data.email);
+        if (data.data) setLoggedIn(data.data.email);
       });
   }
 
@@ -161,7 +165,11 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header isLoggedIn={isLoggedIn} checkUserLogin={checkUserLogin} />
+          <Header
+            isLoggedIn={isLoggedIn}
+            setLoggedIn={setLoggedIn}
+            checkUserLogin={checkUserLogin}
+          />
           <Routes>
             <Route path="/signin" element={<Login handleSignIn={handleSignIn} />} />
             <Route path="/signup" element={<Register handleRegister={handleRegister} />} />

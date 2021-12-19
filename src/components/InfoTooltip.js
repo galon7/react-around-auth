@@ -7,7 +7,7 @@ function InfoTooltip({ isOpen, onClose, successMessage }) {
     <div className={`modal ${isOpen && "modal_open"}`}>
       <div className="modal__container modal__infotooltip">
         <button type="button" className="modal__close" onClick={onClose} />
-        <img src={successMessage ? success : oops} width="120" height="120" />
+        <img src={successMessage ? success : oops} width="120" height="120" alt="" />
         <p style={{ marginTop: 32 }}>
           {successMessage
             ? "Success! You have now been registered."
