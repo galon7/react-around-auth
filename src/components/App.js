@@ -22,7 +22,6 @@ function App() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
-  const [isLoggedIn, setLoggedIn] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -126,7 +125,7 @@ function App() {
         if (res.status === 201) {
           setTooltip(true);
           openPopup();
-          // setTimeout(navigate("/signin"), 3000);
+          navigate("/signin");
         }
         if (res.status === 400) {
           setTooltip(false);
@@ -145,7 +144,7 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         localStorage.setItem("token", data.token);
-        setLoggedIn(email);
+        currentUser.email = email;
         navigate("/");
       })
       .catch((err) => {
@@ -157,7 +156,7 @@ function App() {
     checkToken()
       .then((res) => res.json())
       .then((data) => {
-        if (data.data) setLoggedIn(data.data.email);
+        if (data.data) currentUser.email = data.data.email;
       });
   }
 
@@ -165,18 +164,14 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header
-            isLoggedIn={isLoggedIn}
-            setLoggedIn={setLoggedIn}
-            checkUserLogin={checkUserLogin}
-          />
+          <Header checkUserLogin={checkUserLogin} />
           <Routes>
             <Route path="/signin" element={<Login handleSignIn={handleSignIn} />} />
             <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
             <Route
               path="/*"
               element={
-                <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <ProtectedRoute isLoggedIn={currentUser.email}>
                   <Main
                     onEditProfileClick={handleEditProfileClick}
                     onAddPlaceClick={handleAddPlaceClick}
