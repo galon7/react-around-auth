@@ -32,7 +32,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
 
   return (
     <div className="elements__item">
-      <img src={card.link} alt="Card" className="elements__img" onClick={handleClick} />
+      <img src={card.link} alt={card.name} className="elements__img" onClick={handleClick} />
       <button className={cardDeleteButtonClassName} onClick={handleDeleteClick} />
       <div className="elements__content">
         <h2 className="elements__title">{card.name}</h2>

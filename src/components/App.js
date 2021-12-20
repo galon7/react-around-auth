@@ -12,6 +12,8 @@ import ImagePopup from "./ImagePopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import InfoTooltip from "./InfoTooltip";
+
 import { register, login, checkToken } from "../utils/auth";
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
@@ -42,6 +46,17 @@ function App() {
       .catch((err) => console.log(`Error.....: ${err}`));
   }, []);
 
+  useEffect(() => {
+    const closeByEscape = (e) => {
+      if (e.key === "Escape") {
+        closeAllPopups();
+      }
+    };
+
+    document.addEventListener("keydown", closeByEscape);
+
+    return () => document.removeEventListener("keydown", closeByEscape);
+  }, []);
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   }
@@ -59,6 +74,15 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsImagePopupOpen(false);
+    setIsInfoTooltipOpen(false);
+  }
+
+  function openTooltip() {
+    setIsInfoTooltipOpen(true);
+  }
+
+  function setTooltip(status) {
+    setSuccessMessage(status ? true : false);
   }
 
   function handleCardClick(card) {
@@ -119,45 +143,40 @@ function App() {
       .catch((err) => console.log(`Error.....: ${err}`));
   }
 
-  function handleRegister(password, email, openPopup, setTooltip) {
+  function handleRegister(password, email) {
     register(password, email)
       .then((res) => {
         if (res.status === 201) {
           setTooltip(true);
-          openPopup();
           navigate("/signin");
         }
         if (res.status === 400) {
           setTooltip(false);
-          openPopup();
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log(`Error.....: ${err}`);
         setTooltip(false);
-        openPopup();
-      });
+      })
+      .finally(openTooltip());
   }
 
   function handleSignIn(password, email) {
     login(password, email)
-      .then((res) => res.json())
       .then((data) => {
         localStorage.setItem("token", data.token);
         currentUser.email = email;
         navigate("/");
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => console.log(`Error.....: ${err}`));
   }
 
   function checkUserLogin() {
     checkToken()
-      .then((res) => res.json())
       .then((data) => {
         if (data.data) currentUser.email = data.data.email;
-      });
+      })
+      .catch((err) => console.log(`Error.....: ${err}`));
   }
 
   return (
@@ -209,6 +228,12 @@ function App() {
           />
 
           <ImagePopup card={selectedCard} isOpen={isImagePopupOpen} onClose={closeAllPopups} />
+
+          <InfoTooltip
+            isOpen={isInfoTooltipOpen}
+            onClose={closeAllPopups}
+            successMessage={successMessage}
+          />
         </div>
       </div>
     </CurrentUserContext.Provider>
