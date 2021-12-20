@@ -1,15 +1,13 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-function Header({ checkUserLogin }) {
-  const currentUser = React.useContext(CurrentUserContext);
+function Header({ checkUserLogin, userEmail, setUserEmail }) {
   checkUserLogin();
   const navigate = useNavigate();
 
   function handleHeaderClick() {
-    if (currentUser.email) {
-      currentUser.email = "";
+    if (userEmail) {
+      setUserEmail("");
       localStorage.removeItem("token");
       navigate("/login");
     }
@@ -19,9 +17,9 @@ function Header({ checkUserLogin }) {
     <header className="header">
       <div className="header__vector" />
       <div style={{ display: "flex" }}>
-        {currentUser.email ? <p className="header__email">{currentUser.email}</p> : ""}
+        {userEmail ? <p className="header__email">{userEmail}</p> : ""}
         <Link to="/signin" className="header__link" onClick={handleHeaderClick}>
-          {currentUser.email ? "Log out" : "Log in"}
+          {userEmail ? "Log out" : "Log in"}
         </Link>
       </div>
     </header>

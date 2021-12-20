@@ -37,5 +37,5 @@ export const checkToken = () => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
-  }).then(getResponseData);
+  });
 };

@@ -25,6 +25,7 @@ function App() {
   const [successMessage, setSuccessMessage] = useState("");
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
+  const [userEmail, setUserEmail] = useState("");
   const [cards, setCards] = useState([]);
   const navigate = useNavigate();
 
@@ -57,6 +58,7 @@ function App() {
 
     return () => document.removeEventListener("keydown", closeByEscape);
   }, []);
+
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
   }
@@ -145,14 +147,9 @@ function App() {
 
   function handleRegister(password, email) {
     register(password, email)
-      .then((res) => {
-        if (res.status === 201) {
-          setTooltip(true);
-          navigate("/signin");
-        }
-        if (res.status === 400) {
-          setTooltip(false);
-        }
+      .then(() => {
+        setTooltip(true);
+        navigate("/signin");
       })
       .catch((err) => {
         console.log(`Error.....: ${err}`);
@@ -165,7 +162,7 @@ function App() {
     login(password, email)
       .then((data) => {
         localStorage.setItem("token", data.token);
-        currentUser.email = email;
+        setUserEmail(email);
         navigate("/");
       })
       .catch((err) => console.log(`Error.....: ${err}`));
@@ -174,7 +171,7 @@ function App() {
   function checkUserLogin() {
     checkToken()
       .then((data) => {
-        if (data.data) currentUser.email = data.data.email;
+        if (data.data) setUserEmail(data.data.email);
       })
       .catch((err) => console.log(`Error.....: ${err}`));
   }
@@ -183,14 +180,18 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header checkUserLogin={checkUserLogin} />
+          <Header
+            checkUserLogin={checkUserLogin}
+            userEmail={userEmail}
+            setUserEmail={setUserEmail}
+          />
           <Routes>
             <Route path="/signin" element={<Login handleSignIn={handleSignIn} />} />
             <Route path="/signup" element={<Register handleRegister={handleRegister} />} />
             <Route
               path="/*"
               element={
-                <ProtectedRoute isLoggedIn={currentUser.email}>
+                <ProtectedRoute isLoggedIn={userEmail}>
                   <Main
                     onEditProfileClick={handleEditProfileClick}
                     onAddPlaceClick={handleAddPlaceClick}
