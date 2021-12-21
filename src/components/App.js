@@ -185,14 +185,6 @@ function App() {
       .catch((err) => console.log(`Error.....: ${err}`));
   }
 
-  // function checkUserLogin() {
-  //   checkToken()
-  //     .then((data) => {
-  //       if (data.data) setUserEmail(data.data.email);
-  //     })
-  //     .catch((err) => console.log(`Error.....: ${err}`));
-  // }
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
