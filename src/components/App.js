@@ -25,9 +25,25 @@ function App() {
   const [successMessage, setSuccessMessage] = useState("");
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [cards, setCards] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      checkToken(token)
+        .then((data) => {
+          if (data.data) {
+            setIsLoggedIn(true);
+            setUserEmail(data.data.email);
+            navigate("/");
+          }
+        })
+        .catch((err) => console.log(`Error.....: ${err}`));
+    }
+  }, [navigate]);
 
   useEffect(() => {
     api
@@ -155,33 +171,35 @@ function App() {
         console.log(`Error.....: ${err}`);
         setTooltip(false);
       })
-      .finally(openTooltip());
+      .finally(openTooltip);
   }
 
   function handleSignIn(password, email) {
     login(password, email)
       .then((data) => {
         localStorage.setItem("token", data.token);
+        setIsLoggedIn(true);
         setUserEmail(email);
         navigate("/");
       })
       .catch((err) => console.log(`Error.....: ${err}`));
   }
 
-  function checkUserLogin() {
-    checkToken()
-      .then((data) => {
-        if (data.data) setUserEmail(data.data.email);
-      })
-      .catch((err) => console.log(`Error.....: ${err}`));
-  }
+  // function checkUserLogin() {
+  //   checkToken()
+  //     .then((data) => {
+  //       if (data.data) setUserEmail(data.data.email);
+  //     })
+  //     .catch((err) => console.log(`Error.....: ${err}`));
+  // }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
           <Header
-            checkUserLogin={checkUserLogin}
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
             userEmail={userEmail}
             setUserEmail={setUserEmail}
           />

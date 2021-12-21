@@ -29,13 +29,13 @@ export const login = (password, email) => {
   }).then(getResponseData);
 };
 
-export const checkToken = () => {
+export const checkToken = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: "GET",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${token}`,
     },
-  });
+  }).then(getResponseData);
 };
