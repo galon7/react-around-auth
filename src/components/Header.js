@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-function Header({ isLoggedIn, setIsLoggedIn, userEmail, setUserEmail }) {
+function Header({ isLoggedIn, setIsLoggedIn, userEmail, setUserEmail, setToken }) {
   const [linkText, setLinkText] = useState("");
   const navigate = useNavigate();
   let path = window.location.pathname;
@@ -17,6 +17,7 @@ function Header({ isLoggedIn, setIsLoggedIn, userEmail, setUserEmail }) {
       setUserEmail("");
       setIsLoggedIn(false);
       localStorage.removeItem("token");
+      setToken(null);
       navigate("/signin");
     }
   }

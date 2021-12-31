@@ -14,11 +14,11 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set PORT=3001 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "yarn run build && scp -r ./build/* agoykman@galon.students.nomoreparties.sbs:/home/agoykman/around-frontend" 
+    "deploy": "yarn run build && scp -r ./build/* agoykman@galon.students.nomoreparties.sbs:/home/agoykman/around-frontend"
   },
   "eslintConfig": {
     "extends": [

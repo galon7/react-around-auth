@@ -17,6 +17,7 @@ import InfoTooltip from "./InfoTooltip";
 import { register, login, checkToken } from "../utils/auth";
 
 function App() {
+  const [jwt, setJwt] = useState(localStorage.getItem("token"));
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -31,37 +32,41 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      checkToken(token)
+    api._headers = { Authorization: `Bearer ${jwt}`, "Content-Type": "application/json" };
+    if (jwt) {
+      checkToken(jwt)
         .then((data) => {
-          if (data.data) {
+          if (data) {
             setIsLoggedIn(true);
-            setUserEmail(data.data.email);
+            setUserEmail(data.email);
             navigate("/");
           }
         })
         .catch((err) => console.log(`Error.....: ${err}`));
     }
-  }, [navigate]);
+  }, [navigate, jwt]);
 
   useEffect(() => {
-    api
-      .getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) => console.log(`Error.....: ${err}`));
-  }, []);
+    if (jwt) {
+      api
+        .getUserInfo()
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((err) => console.log(`Error.....: ${err}`));
+    }
+  }, [jwt]);
 
   useEffect(() => {
-    api
-      .getInitialCards()
-      .then((data) => {
-        setCards(data);
-      })
-      .catch((err) => console.log(`Error.....: ${err}`));
-  }, []);
+    if (jwt) {
+      api
+        .getInitialCards()
+        .then((data) => {
+          setCards(data);
+        })
+        .catch((err) => console.log(`Error.....: ${err}`));
+    }
+  }, [jwt]);
 
   useEffect(() => {
     const closeByEscape = (e) => {
@@ -177,6 +182,7 @@ function App() {
   function handleSignIn(password, email) {
     login(password, email)
       .then((data) => {
+        setJwt(data.token);
         localStorage.setItem("token", data.token);
         setIsLoggedIn(true);
         setUserEmail(email);
@@ -194,6 +200,7 @@ function App() {
             setIsLoggedIn={setIsLoggedIn}
             userEmail={userEmail}
             setUserEmail={setUserEmail}
+            setToken={setJwt}
           />
           <Routes>
             <Route path="/signin" element={<Login handleSignIn={handleSignIn} />} />

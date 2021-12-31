@@ -1,4 +1,4 @@
-const BASE_URL = "https://register.nomoreparties.co";
+const BASE_URL = "http://localhost:3000";
 
 function getResponseData(res) {
   if (!res.ok) {
