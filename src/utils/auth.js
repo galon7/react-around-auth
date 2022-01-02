@@ -1,4 +1,4 @@
-const BASE_URL = "http://api.galon.students.nomoreparties.sbs";
+const BASE_URL = "https://api.galon.students.nomoreparties.sbs";
 
 function getResponseData(res) {
   if (!res.ok) {

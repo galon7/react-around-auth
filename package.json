@@ -18,7 +18,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "yarn run build && scp -r ./build/* agoykman@galon.students.nomoreparties.sbs:/home/agoykman/around-frontend"
+    "deploy": "yarn run build && scp -r ./build/* agoykman@galon.students.nomoreparties.sbs:/home/agoykman/react-around-api-full/frontend"
   },
   "eslintConfig": {
     "extends": [
