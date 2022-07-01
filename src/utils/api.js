@@ -70,7 +70,7 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: "https://api.galon.students.nomoreparties.sbs",
+  baseUrl: "https://backend-kohl-ten.vercel.app",
 });
 
 export default Api;
