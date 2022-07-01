@@ -1,4 +1,4 @@
-const BASE_URL = "https://api.galon.students.nomoreparties.sbs";
+const BASE_URL = "https://backend-kohl-ten.vercel.app";
 
 function getResponseData(res) {
   if (!res.ok) {
