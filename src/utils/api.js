@@ -70,7 +70,7 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: "https://backend-kohl-ten.vercel.app",
+  baseUrl: "https://react-around-api-full-three.vercel.app",
 });
 
 export default Api;

@@ -1,4 +1,4 @@
-const BASE_URL = "https://backend-kohl-ten.vercel.app";
+const BASE_URL = "https://react-around-api-full-three.vercel.app";
 
 function getResponseData(res) {
   if (!res.ok) {
